@@ -1,25 +1,25 @@
 package pl.piotrrokita.TravelOrganizer.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.List;
+import java.util.Optional;
 
-@RepositoryRestResource(path = "items", collectionResourceRel = "items")
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository {
 
-    @Override
-    @RestResource(exported = false)
-    default void deleteById(Long aLong) {
-    }
+    List<Item> findAll();
 
-    @Override
-    @RestResource(exported = false)
-    default void delete(Item entity) {
-    }
+    Page<Item> findAll(Pageable page);
+
+    Optional<Item> findById(Long id);
+
+    Item save(Item entity);
 
     @RestResource(path = "completed", rel = "completed")
     List<Item> findByCompleted(@Param("state") boolean completed);
+
+    boolean existsById(Long id);
 }
