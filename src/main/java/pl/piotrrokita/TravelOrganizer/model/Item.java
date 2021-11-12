@@ -9,7 +9,7 @@ import java.util.Date;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Description must be filled.")
     private String description;

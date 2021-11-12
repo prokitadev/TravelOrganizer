@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.piotrrokita.TravelOrganizer.model.Item;
 import pl.piotrrokita.TravelOrganizer.model.ItemRepository;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -53,6 +53,16 @@ class ItemController {
         }
         item.setId(id); // if run by path "item/4" with body "{ id: 3 }"
         repository.save(item);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PatchMapping(value = "/items/{id}")
+    public ResponseEntity<?> toggleItem(@PathVariable Long id){
+        if(!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id).ifPresent(item -> item.setCompleted(!item.getCompleted()));
         return ResponseEntity.noContent().build();
     }
 

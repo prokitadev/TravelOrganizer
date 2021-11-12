@@ -1,0 +1,10 @@
+spring:
+  h2.console:
+    enabled: true
+    path: '/console'
+    user-name:
+  datasource:
+    url: 'jdbc:h2:file:C:/Users/piotr/Downloads/TravelOrganizer/TravelOrganizer/travel-db'
+  jpa:
+    hibernate:
+      ddl-auto: validate
