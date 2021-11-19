@@ -9,6 +9,6 @@ public class V2__insert_example_item extends BaseJavaMigration {
     @Override
     public void migrate(Context context) {
         new JdbcTemplate(new SingleConnectionDataSource(context.getConnection(), true))
-                .execute("insert into ITEMS (description) values ('Testowa')");
+                .execute("insert into ITEMS (description) values ('Test')");
     }
 }

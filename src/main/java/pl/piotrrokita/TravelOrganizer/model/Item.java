@@ -1,53 +1,52 @@
 package pl.piotrrokita.TravelOrganizer.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "items")
-public class Item {
+public class Item extends BaseItemSuperclass{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotEmpty(message = "Description must be filled.")
     private String description;
-    private Date dueDate;
-    private Boolean completed;
+    private LocalDateTime dueDate;
+    @Embedded
+    private Audit audit = new Audit();
+    @ManyToOne
+    @JoinColumn(name = "item_group_id")
+    private ItemGroup itemGroup;
 
     public Item() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Item(String description, LocalDateTime dueDate) {
+        this.description = description;
+        this.dueDate = dueDate;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Boolean getCompleted() {
-        return completed;
+    public ItemGroup getItemGroup() {
+        return itemGroup;
     }
 
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
+    public void setItemGroup(ItemGroup itemGroup) {
+        this.itemGroup = itemGroup;
+    }
+
+    public void updateFrom(final Item source) {
+        description = source.description;
+        super.setCompleted(source.isCompleted());
+        dueDate = source.dueDate;
     }
 }

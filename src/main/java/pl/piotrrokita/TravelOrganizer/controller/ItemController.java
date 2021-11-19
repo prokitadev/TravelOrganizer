@@ -47,12 +47,15 @@ class ItemController {
     }
 
     @RequestMapping(value = "/items/{id}", method = RequestMethod.PUT)
-    ResponseEntity<?> updateItem(@PathVariable Long id, @RequestBody Item item){
+    ResponseEntity<?> updateItem(@PathVariable Long id, @RequestBody Item toUpdate){
         if(!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        item.setId(id); // if run by path "item/4" with body "{ id: 3 }"
-        repository.save(item);
+        repository.findById(id)
+                .ifPresent(item -> {
+                    item.updateFrom(toUpdate);
+                    repository.save(item);
+                });
         return ResponseEntity.noContent().build();
     }
 
@@ -62,7 +65,8 @@ class ItemController {
         if(!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id).ifPresent(item -> item.setCompleted(!item.getCompleted()));
+        repository.findById(id)
+                .ifPresent(item -> item.setCompleted(!item.isCompleted()));
         return ResponseEntity.noContent().build();
     }
 

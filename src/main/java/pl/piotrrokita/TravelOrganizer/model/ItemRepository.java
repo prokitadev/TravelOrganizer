@@ -22,4 +22,6 @@ public interface ItemRepository {
     List<Item> findByCompleted(@Param("state") boolean completed);
 
     boolean existsById(Long id);
+
+    boolean existsByCompletedIsFalseAndItemGroup_Id(Long itemGroupId);
 }
