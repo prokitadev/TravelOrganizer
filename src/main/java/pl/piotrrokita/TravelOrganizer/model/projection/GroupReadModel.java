@@ -4,13 +4,12 @@ import pl.piotrrokita.TravelOrganizer.model.Item;
 import pl.piotrrokita.TravelOrganizer.model.ItemGroup;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
 
+    private String name;
     private String description;
     /**
      * DueDate from the latest item in group.
@@ -19,12 +18,21 @@ public class GroupReadModel {
     private Set<GroupItemReadModel> items;
 
     public GroupReadModel(ItemGroup source) {
+        name = source.getName();
         description = source.getDescription();
         source.getItems().stream()
                 .map(Item::getDueDate)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(d -> dueDate = d);
         items = source.getItems().stream().map(GroupItemReadModel::new).collect(Collectors.toSet());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

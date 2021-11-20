@@ -29,4 +29,8 @@ public class ItemGroup extends BaseItemSuperclass {
     public Template getTemplate() {
         return template;
     }
+
+    public void setTemplate(Template template) {
+        this.template = template;
+    }
 }

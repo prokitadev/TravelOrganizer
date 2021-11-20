@@ -24,6 +24,10 @@ public class Template {
     public Template() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }

@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 @Service
 public class TemplateService {
 
+    public static final String ILLEGAL_STATE_MESSAGE = "Create new Item Group is not allowed for this Template!";
+    public static final String ILLEGAL_ARGUMENT_MESSAGE = "Template with given id not found.";
+
     private final TemplateRepository repository;
     private final ItemGroupRepository itemGroupRepository;
     private final ItemConfigurationProperties properties;
@@ -35,7 +38,7 @@ public class TemplateService {
     public GroupReadModel createGroup(Long templateId, LocalDateTime dueDate) {
         if(!properties.getTemplate().isAllowMultipleItems() &&
                 itemGroupRepository.existsByCompletedIsFalseAndTemplate_Id(templateId)) {
-            throw new IllegalStateException("Create new Item Group is not allowed for this Template!");
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
         }
         ItemGroup result = repository.findById(templateId).map(template -> {
             var itemGroup = new ItemGroup();
@@ -45,8 +48,9 @@ public class TemplateService {
                     .map(templateStep ->
                             new Item(templateStep.getDescription(), dueDate.plusDays(templateStep.getDeadline())))
                     .collect(Collectors.toSet()));
-            return itemGroup;
-        }).orElseThrow(() -> new IllegalArgumentException("Template with given id not found."));
+            itemGroup.setTemplate(template);
+            return itemGroupRepository.save(itemGroup);
+        }).orElseThrow(() -> new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE));
         return new GroupReadModel(result);
     }
 

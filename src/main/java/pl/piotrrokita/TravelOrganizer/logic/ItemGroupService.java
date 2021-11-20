@@ -40,5 +40,6 @@ public class ItemGroupService {
         ItemGroup result = repository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Item group with given id not exists."));
         result.setCompleted(!result.isCompleted());
+        repository.save(result);
     }
 }

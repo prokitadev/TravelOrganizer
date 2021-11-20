@@ -7,7 +7,7 @@ public interface ItemGroupRepository {
 
     List<ItemGroup> findAll();
 
-    Optional<ItemGroup> findById(Long Id);
+    Optional<ItemGroup> findById(Long id);
 
     ItemGroup save(ItemGroup entity);
 
