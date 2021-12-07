@@ -2,7 +2,6 @@ package pl.piotrrokita.TravelOrganizer.logic;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import pl.piotrrokita.TravelOrganizer.model.ItemGroup;
 import pl.piotrrokita.TravelOrganizer.model.ItemGroupRepository;
@@ -16,6 +15,10 @@ import java.util.stream.Collectors;
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ItemGroupService {
+
+    public static final String TOOGLE_GROUP_ILLEGAL_STATE_MESSAGE = "Group has uncompleted items. Complete all items first!";
+    public static final String TOOGLE_GROUP_ILLEGAL_ARG_MESSAGE = "Item group with given id not exists.";
+
     private ItemGroupRepository repository;
     private ItemRepository itemRepository;
 
@@ -35,10 +38,10 @@ public class ItemGroupService {
 
     public void toggleGroup(Long groupId) {
         if(itemRepository.existsByCompletedIsFalseAndItemGroup_Id(groupId)) {
-            throw new IllegalStateException("Group has uncompleted items. Complete all items first!");
+            throw new IllegalStateException(TOOGLE_GROUP_ILLEGAL_STATE_MESSAGE);
         }
         ItemGroup result = repository.findById(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("Item group with given id not exists."));
+                .orElseThrow(() -> new IllegalArgumentException(TOOGLE_GROUP_ILLEGAL_ARG_MESSAGE));
         result.setCompleted(!result.isCompleted());
         repository.save(result);
     }
