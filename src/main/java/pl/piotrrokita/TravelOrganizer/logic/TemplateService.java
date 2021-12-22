@@ -6,11 +6,9 @@ import pl.piotrrokita.TravelOrganizer.model.*;
 import pl.piotrrokita.TravelOrganizer.model.projection.GroupReadModel;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class TemplateService {
 
     public static final String ILLEGAL_STATE_MESSAGE = "Create new Item Group is not allowed for this Template!";

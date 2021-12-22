@@ -17,9 +17,17 @@ public class Item extends BaseItemSuperclass{
     private ItemGroup itemGroup;
 
     public Item() {
+        super("not set");
     }
 
     public Item(String description, LocalDateTime dueDate) {
+        super("not set");
+        this.description = description;
+        this.dueDate = dueDate;
+    }
+
+    public Item(String name, String description, LocalDateTime dueDate) {
+        super(name);
         this.description = description;
         this.dueDate = dueDate;
     }

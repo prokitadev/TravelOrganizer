@@ -12,7 +12,6 @@ import pl.piotrrokita.TravelOrganizer.model.projection.GroupWriteModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ItemGroupService {
 

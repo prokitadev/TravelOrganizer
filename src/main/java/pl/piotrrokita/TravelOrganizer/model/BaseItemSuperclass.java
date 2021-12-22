@@ -14,7 +14,11 @@ public abstract class BaseItemSuperclass {
     @NotEmpty(message = "Name must be filled.")
     private String name;
     private String description;
-    private boolean completed;
+    private boolean completed = false;
+
+    public BaseItemSuperclass(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

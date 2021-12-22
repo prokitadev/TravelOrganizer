@@ -24,7 +24,7 @@ class ItemController {
         this.repository = repository;
     }
 
-    @RequestMapping(value = "/items", params = {"!sort", "!page", "!size"}, method = RequestMethod.GET)
+    @GetMapping(value = "/items", params = {"!sort", "!page", "!size"})
     ResponseEntity<List<Item>> readAllItems() {
         logger.warn("All items are exposing!");
         return ResponseEntity.ok(repository.findAll());
