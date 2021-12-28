@@ -16,7 +16,7 @@ public class ItemGroup extends BaseItemSuperclass {
     private Template template;
 
     public ItemGroup() {
-        super("not set");
+        super("not set", "not set");
     }
 
     public Set<Item> getItems() {

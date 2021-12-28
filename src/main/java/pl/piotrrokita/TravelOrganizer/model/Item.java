@@ -2,13 +2,11 @@ package pl.piotrrokita.TravelOrganizer.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "items")
 public class Item extends BaseItemSuperclass{
 
-    private String description;
     private LocalDateTime dueDate;
     @Embedded
     private Audit audit = new Audit();
@@ -17,23 +15,17 @@ public class Item extends BaseItemSuperclass{
     private ItemGroup itemGroup;
 
     public Item() {
-        super("not set");
+        super("not set", "not set");
     }
 
-    public Item(String description, LocalDateTime dueDate) {
-        super("not set");
-        this.description = description;
+    public Item(LocalDateTime dueDate) {
+        super("not set", "not set");
         this.dueDate = dueDate;
     }
 
     public Item(String name, String description, LocalDateTime dueDate) {
-        super(name);
-        this.description = description;
+        super(name, description);
         this.dueDate = dueDate;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public LocalDateTime getDueDate() {
@@ -53,7 +45,8 @@ public class Item extends BaseItemSuperclass{
     }
 
     public void updateFrom(final Item source) {
-        description = source.description;
+        super.setName(source.getName());
+        super.setDescription(source.getDescription());
         super.setCompleted(source.isCompleted());
         dueDate = source.dueDate;
     }

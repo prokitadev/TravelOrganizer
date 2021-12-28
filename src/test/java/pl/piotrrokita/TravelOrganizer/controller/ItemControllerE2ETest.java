@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 import pl.piotrrokita.TravelOrganizer.model.Item;
 import pl.piotrrokita.TravelOrganizer.model.ItemRepository;
 
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ItemControllerE2ETest {
 
@@ -29,6 +27,7 @@ public class ItemControllerE2ETest {
     @Test
     void httpGet_returnsAllTasks() {
         // given
+        int initialSize = repository.findAll().size();
         repository.save(new Item("foo", "foo", LocalDateTime.now()));
         repository.save(new Item("bar","bar", LocalDateTime.now()));
 
@@ -36,6 +35,6 @@ public class ItemControllerE2ETest {
         Item[] result = restTemplate.getForObject("http://localhost:" + port + "/items", Item[].class);
 
         // then
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(initialSize + 2);
     }
 }

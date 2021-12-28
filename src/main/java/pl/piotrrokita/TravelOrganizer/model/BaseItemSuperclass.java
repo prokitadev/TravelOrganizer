@@ -14,10 +14,11 @@ public abstract class BaseItemSuperclass {
     @NotEmpty(message = "Name must be filled.")
     private String name;
     private String description;
-    private boolean completed = false;
+    private Boolean completed = false;
 
-    public BaseItemSuperclass(String name) {
+    public BaseItemSuperclass(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public Long getId() {
@@ -44,11 +45,11 @@ public abstract class BaseItemSuperclass {
         this.description = description;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 }
