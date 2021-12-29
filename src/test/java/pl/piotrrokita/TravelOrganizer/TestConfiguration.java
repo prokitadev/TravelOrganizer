@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import pl.piotrrokita.TravelOrganizer.model.BaseItemSuperclass;
 import pl.piotrrokita.TravelOrganizer.model.Item;
 import pl.piotrrokita.TravelOrganizer.model.ItemRepository;
 
@@ -44,12 +45,22 @@ public class TestConfiguration {
 
             @Override
             public Optional<Item> findById(Long id) {
-                return Optional.empty();
+                return Optional.of(items.get(id));
             }
 
             @Override
             public Item save(Item entity) {
-                return items.put(items.size() + 1L, entity);
+                long key = items.size() + 1L;
+                try {
+                    var field = BaseItemSuperclass.class.getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, key);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+                items.put(key, entity);
+                return items.get(key);
             }
 
             @Override
@@ -59,7 +70,7 @@ public class TestConfiguration {
 
             @Override
             public boolean existsById(Long id) {
-                return false;
+                return items.get(id) != null;
             }
 
             @Override

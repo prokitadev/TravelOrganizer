@@ -44,7 +44,8 @@ public class TemplateService {
             itemGroup.setItems(template.getTemplateSteps()
                     .stream()
                     .map(templateStep ->
-                            new Item(templateStep.getDescription(), dueDate.plusDays(templateStep.getDeadline())))
+                            new Item(templateStep.getName(), templateStep.getDescription(),
+                                    dueDate.plusDays(templateStep.getDeadline())))
                     .collect(Collectors.toSet()));
             itemGroup.setTemplate(template);
             return itemGroupRepository.save(itemGroup);
