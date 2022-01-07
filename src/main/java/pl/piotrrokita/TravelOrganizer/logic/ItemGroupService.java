@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.piotrrokita.TravelOrganizer.model.ItemGroup;
 import pl.piotrrokita.TravelOrganizer.model.ItemGroupRepository;
 import pl.piotrrokita.TravelOrganizer.model.ItemRepository;
+import pl.piotrrokita.TravelOrganizer.model.Template;
 import pl.piotrrokita.TravelOrganizer.model.projection.GroupReadModel;
 import pl.piotrrokita.TravelOrganizer.model.projection.GroupWriteModel;
 
@@ -27,8 +28,12 @@ public class ItemGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        ItemGroup result = repository.save(source.toGroup());
-        return new GroupReadModel(result);
+        return createGroup(source, null);
+    }
+
+    GroupReadModel createGroup(GroupWriteModel source, Template template) {
+       ItemGroup result = repository.save(source.toGroup(template));
+       return new GroupReadModel(result);
     }
 
     public List<GroupReadModel> readAll() {

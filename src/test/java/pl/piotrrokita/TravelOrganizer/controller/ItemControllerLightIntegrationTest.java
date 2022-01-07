@@ -14,15 +14,19 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @WebMvcTest(ItemController.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("integration")
 public class ItemControllerLightIntegrationTest {
+
+    private static final String TEST_STRING = "Test String Value";
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,13 +35,12 @@ public class ItemControllerLightIntegrationTest {
     private ItemRepository repository;
 
     @Test
-    void httpGet_ReturnGivenTask() throws Exception {
+    void httpGet_ReturnGivenItem() throws Exception {
         //given
-        String testValue = "Test String Value";
         when(repository.findById(anyLong()))
-                .thenReturn(Optional.of(new Item(testValue, testValue, LocalDateTime.now())));
+                .thenReturn(Optional.of(new Item(TEST_STRING, TEST_STRING, LocalDateTime.now())));
         //when + then
         mockMvc.perform(get("/items/123"))
-                .andExpect(content().string(containsString(testValue)));
+                .andExpect(content().string(containsString(TEST_STRING)));
     }
 }

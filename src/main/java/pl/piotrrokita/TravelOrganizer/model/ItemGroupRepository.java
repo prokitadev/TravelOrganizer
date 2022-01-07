@@ -11,5 +11,7 @@ public interface ItemGroupRepository {
 
     ItemGroup save(ItemGroup entity);
 
+    boolean existsById(Long id);
+
     boolean existsByCompletedIsFalseAndTemplate_Id(Long templateId);
 }

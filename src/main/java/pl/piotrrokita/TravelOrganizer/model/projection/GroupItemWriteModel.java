@@ -1,6 +1,8 @@
 package pl.piotrrokita.TravelOrganizer.model.projection;
 
 import pl.piotrrokita.TravelOrganizer.model.Item;
+import pl.piotrrokita.TravelOrganizer.model.ItemGroup;
+
 import java.time.LocalDateTime;
 
 public class GroupItemWriteModel {
@@ -33,7 +35,7 @@ public class GroupItemWriteModel {
         this.dueDate = dueDate;
     }
 
-    public Item toItem() {
-        return new Item(name, description, dueDate);
+    public Item toItem(final ItemGroup itemGroup) {
+        return new Item(name, description, dueDate, itemGroup);
     }
 }

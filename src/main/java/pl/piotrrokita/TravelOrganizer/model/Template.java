@@ -28,19 +28,43 @@ public class Template {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Audit getAudit() {
+        return audit;
+    }
+
     public Set<ItemGroup> getItemGroups() {
         return itemGroups;
     }
 
+    public void setItemGroups(Set<ItemGroup> itemGroups) {
+        this.itemGroups = itemGroups;
+    }
+
     public Set<TemplateStep> getTemplateSteps() {
         return templateSteps;
+    }
+
+    public void setTemplateSteps(Set<TemplateStep> templateSteps) {
+        this.templateSteps = templateSteps;
     }
 }

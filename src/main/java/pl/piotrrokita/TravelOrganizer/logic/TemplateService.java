@@ -1,9 +1,11 @@
 package pl.piotrrokita.TravelOrganizer.logic;
 
-import org.springframework.stereotype.Service;
 import pl.piotrrokita.TravelOrganizer.ItemConfigurationProperties;
 import pl.piotrrokita.TravelOrganizer.model.*;
+import pl.piotrrokita.TravelOrganizer.model.projection.GroupItemWriteModel;
 import pl.piotrrokita.TravelOrganizer.model.projection.GroupReadModel;
+import pl.piotrrokita.TravelOrganizer.model.projection.GroupWriteModel;
+import pl.piotrrokita.TravelOrganizer.model.projection.TemplateWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,20 +19,22 @@ public class TemplateService {
     private final TemplateRepository repository;
     private final ItemGroupRepository itemGroupRepository;
     private final ItemConfigurationProperties properties;
+    private final ItemGroupService itemGroupService;
 
     public TemplateService(TemplateRepository repository, ItemGroupRepository itemGroupRepository,
-                           ItemConfigurationProperties properties) {
+                           ItemConfigurationProperties properties, ItemGroupService service) {
         this.repository = repository;
         this.itemGroupRepository = itemGroupRepository;
         this.properties = properties;
+        this.itemGroupService = service;
     }
 
     public List<Template> readAll() {
         return repository.findAll();
     }
 
-    public Template create(Template toSave) {
-        return repository.save(toSave);
+    public Template create(final TemplateWriteModel toSave) {
+        return repository.save(toSave.toTemplate());
     }
 
     public GroupReadModel createGroup(Long templateId, LocalDateTime dueDate) {
@@ -38,19 +42,24 @@ public class TemplateService {
                 itemGroupRepository.existsByCompletedIsFalseAndTemplate_Id(templateId)) {
             throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
         }
-        ItemGroup result = repository.findById(templateId).map(template -> {
-            var itemGroup = new ItemGroup();
-            itemGroup.setName(template.getName());
-            itemGroup.setItems(template.getTemplateSteps()
-                    .stream()
-                    .map(templateStep ->
-                            new Item(templateStep.getName(), templateStep.getDescription(),
-                                    dueDate.plusDays(templateStep.getDeadline())))
-                    .collect(Collectors.toSet()));
-            itemGroup.setTemplate(template);
-            return itemGroupRepository.save(itemGroup);
+        GroupReadModel result = repository.findById(templateId)
+                .map(template -> {
+                    var itemGroup = new GroupWriteModel();
+                    itemGroup.setName(template.getName());
+                    itemGroup.setDescription(template.getDescription());
+                    itemGroup.setItems(
+                            template.getTemplateSteps().stream()
+                                .map(templateStep -> {
+                                    var item = new GroupItemWriteModel();
+                                    item.setName(templateStep.getName());
+                                    item.setDescription(templateStep.getDescription());
+                                    item.setDueDate(dueDate.plusDays(templateStep.getDeadline()));
+                                    return item;
+                                })
+                                .collect(Collectors.toSet()));
+                    return itemGroupService.createGroup(itemGroup, template);
         }).orElseThrow(() -> new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE));
-        return new GroupReadModel(result);
+        return result;
     }
 
 

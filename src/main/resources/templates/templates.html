@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Organizer: projects</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+<main>
+    <!--/*@thymesVar id="template" type="pl/piotrrokita/TravelOrganizer/model/projection/TemplateWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/templates}" th:object="${template}">
+        <fieldset>
+            <legend>New template</legend>
+            <label>Template name:
+                <input type="text" th:field="*{name}"/>
+            </label>
+        </fieldset>
+
+        <fieldset th:each="templateStep, templateStepStat: *{templateSteps}">
+            <legend th:text="|Step #${templateStepStat.index + 1}|"></legend>
+            <label>Step: name
+                <input type="text" th:field="*{templateSteps[__${templateStepStat.index}__].name}"/>
+            </label>
+            <label>Step: description
+                <input type="text" th:field="*{templateSteps[__${templateStepStat.index}__].description}"/>
+            </label>
+            <label>Step: deadline
+                <input type="text" th:field="*{templateSteps[__${templateStepStat.index}__].deadline}"/>
+            </label>
+        </fieldset>
+    </form>
+</main>
+</body>
+</html>

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
 
+    private long id;
     private String name;
     private String description;
     /**
@@ -18,6 +19,7 @@ public class GroupReadModel {
     private Set<GroupItemReadModel> items;
 
     public GroupReadModel(ItemGroup source) {
+        id = source.getId();
         name = source.getName();
         description = source.getDescription();
         source.getItems().stream()
@@ -25,6 +27,14 @@ public class GroupReadModel {
                 .max(LocalDateTime::compareTo)
                 .ifPresent(d -> dueDate = d);
         items = source.getItems().stream().map(GroupItemReadModel::new).collect(Collectors.toSet());
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

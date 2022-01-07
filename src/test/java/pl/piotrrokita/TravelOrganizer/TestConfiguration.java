@@ -12,7 +12,9 @@ import pl.piotrrokita.TravelOrganizer.model.Item;
 import pl.piotrrokita.TravelOrganizer.model.ItemRepository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Configuration
 public class TestConfiguration {
@@ -76,6 +78,21 @@ public class TestConfiguration {
             @Override
             public boolean existsByCompletedIsFalseAndItemGroup_Id(Long itemGroupId) {
                 return false;
+            }
+
+            @Override
+            public List<Item> findAllByItemGroup_id(Long itemGroupId) {
+                if(itemGroupId == null) {
+                    return null;
+                }
+                return items.values().stream()
+                        .filter(item -> itemGroupId.equals(item.getItemGroup().getId()))
+                        .collect(Collectors.toList());
+            }
+
+            @Override
+            public List<Item> findToCompleteByDueDate(LocalDateTime date) {
+                return null;
             }
         };
     }

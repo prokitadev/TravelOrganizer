@@ -19,17 +19,21 @@ public class Item extends BaseItemSuperclass{
     }
 
     public Item(LocalDateTime dueDate) {
-        super("not set", "not set");
-        this.dueDate = dueDate;
+        this("not set", "not set", dueDate);
     }
 
     public Item(String name, String description, LocalDateTime dueDate) {
+        this(name, description, dueDate, null);
+    }
+
+    public Item(String name, String description, LocalDateTime dueDate, ItemGroup itemGroup) {
         super(name, description);
         this.dueDate = dueDate;
+        this.itemGroup = itemGroup;
     }
 
     public LocalDateTime getDueDate() {
-        return dueDate;
+        return this.dueDate;
     }
 
     public void setDueDate(LocalDateTime dueDate) {

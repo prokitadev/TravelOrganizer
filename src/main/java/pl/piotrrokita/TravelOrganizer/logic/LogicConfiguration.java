@@ -17,7 +17,7 @@ public class LogicConfiguration {
 
     @Bean
     TemplateService templateService(TemplateRepository repository, ItemGroupRepository itemGroupRepository,
-                    ItemConfigurationProperties properties) {
-        return new TemplateService(repository, itemGroupRepository, properties);
+                    ItemConfigurationProperties properties, ItemGroupService itemGroupService) {
+        return new TemplateService(repository, itemGroupRepository, properties, itemGroupService);
     }
 }

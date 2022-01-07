@@ -32,7 +32,7 @@ class TemplateServiceTest {
         var mockGroupRepository = mock(ItemGroupRepository.class);
         when(mockGroupRepository.existsByCompletedIsFalseAndTemplate_Id(anyLong())).thenReturn(true);
         ItemConfigurationProperties mockConfig = mockConfigurationProperties(false);
-        var toTest = new TemplateService(null, mockGroupRepository, mockConfig);
+        var toTest = new TemplateService(null, mockGroupRepository, mockConfig, null);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(DEFAULT_TEMPLATE_ID, DEFAULT_DAY));
         //then
@@ -48,7 +48,7 @@ class TemplateServiceTest {
         var mockTemplateRepository = mock(TemplateRepository.class);
         when(mockTemplateRepository.findById(anyLong())).thenReturn(Optional.empty());
         ItemConfigurationProperties mockConfig = mockConfigurationProperties(true);
-        var toTest = new TemplateService(mockTemplateRepository, null, mockConfig);
+        var toTest = new TemplateService(mockTemplateRepository, null, mockConfig, null);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(DEFAULT_TEMPLATE_ID, DEFAULT_DAY));
         //then
@@ -67,10 +67,10 @@ class TemplateServiceTest {
 
         InMemoryGroupRepository inMemoryGroupRepository = createInMemoryGroupRepository();
         int countBeforeCall = inMemoryGroupRepository.count();
-
+        var serviceWithInMemoryRepo = new ItemGroupService(inMemoryGroupRepository, null);
         ItemConfigurationProperties mockConfig = mockConfigurationProperties(true);
 
-        var toTest = new TemplateService(mockTemplateRepository, inMemoryGroupRepository, mockConfig);
+        var toTest = new TemplateService(mockTemplateRepository, inMemoryGroupRepository, mockConfig, serviceWithInMemoryRepo);
         //when
         GroupReadModel result = toTest.createGroup(DEFAULT_TEMPLATE_ID, DEFAULT_DAY);
         //then
@@ -135,6 +135,11 @@ class TemplateServiceTest {
             }
             map.put(entity.getId(), entity);
             return entity;
+        }
+
+        @Override
+        public boolean existsById(Long id) {
+            return false;
         }
 
         @Override
