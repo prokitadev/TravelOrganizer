@@ -26,9 +26,17 @@
                 <input type="text" th:field="*{templateSteps[__${templateStepStat.index}__].description}"/>
             </label>
             <label>Step: deadline
-                <input type="text" th:field="*{templateSteps[__${templateStepStat.index}__].deadline}"/>
+                <input type="number" th:field="*{templateSteps[__${templateStepStat.index}__].deadline}"/>
             </label>
+            <div>
+                <button type="submit" name="addTemplateStep">+</button>
+            </div>
         </fieldset>
+
+        <p>
+            <button type="submit">Send</button>
+            <button type="reset">Clean</button>
+        </p>
     </form>
 </main>
 </body>

@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/items")
