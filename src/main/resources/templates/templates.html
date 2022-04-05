@@ -8,6 +8,17 @@
 </head>
 <body>
 <main>
+    <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+    <!--/*@thymesVar id="templates" type="java.util.List<pl.piotrrokita.TravelOrganizer.model.Template>"*/-->
+    <dl th:each="template : ${templates}">
+        <dt th:text="${template.name}">...</dt>
+        <dd>
+            <ul>
+                <li th:each="step : ${template.templateSteps}" th:text="|${step.name}. Deadline: ${step.deadline} days.|" ></li>
+            </ul>
+        </dd>
+    </dl>
     <!--/*@thymesVar id="template" type="pl/piotrrokita/TravelOrganizer/model/projection/TemplateWriteModel"*/-->
     <form action="#" method="post" th:action="@{/templates}" th:object="${template}">
         <fieldset>

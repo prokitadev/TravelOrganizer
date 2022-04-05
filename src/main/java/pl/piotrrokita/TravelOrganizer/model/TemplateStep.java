@@ -2,6 +2,7 @@ package pl.piotrrokita.TravelOrganizer.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "templateSteps")
@@ -13,7 +14,7 @@ public class TemplateStep {
     @NotBlank(message = "Template Steps' name must be filled!")
     private String name;
     private String description;
-    @NotBlank(message = "Template Steps' deadline must be filled!")
+    @NotNull(message = "Template Steps' deadline must be filled!")
     private Integer deadline;
     @Embedded
     private final Audit audit = new Audit();
